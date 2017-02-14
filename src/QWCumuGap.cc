@@ -83,7 +83,9 @@ QWCumuGap::QWCumuGap(const edm::ParameterSet& iConfig):
         consumes<std::vector<double> >(vertexZ_);
 
 	for ( int n = 1; n < 7; n++ ) {
-		q[n] = correlations::QVector(0, 0, true);
+		qA[n] = correlations::QVector(0, 0, true);
+		qB[n] = correlations::QVector(0, 0, true);
+		qC[n] = correlations::QVector(0, 0, true);
 	}
 
 	//
