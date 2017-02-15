@@ -4,6 +4,7 @@ MC
 cumu
 test/*
 !test/qw*.py
+!test/pPb*.py
 !test/crab_*.py
 !test/run*.sh
 *.pyc
