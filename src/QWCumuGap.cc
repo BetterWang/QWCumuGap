@@ -101,13 +101,15 @@ QWCumuGap::QWCumuGap(const edm::ParameterSet& iConfig):
 	trV->Branch("wQaabc", &wQaabc[2], "wQaabc/D");
 	trV->Branch("wQab", &wQab[2], "wQab/D");
 	trV->Branch("wQac", &wQac[2], "wQac/D");
-	trV->Branch("wQ", &wQ[2], "wQ/D");
+	trV->Branch("wQ2", &wQ2[2], "wQ2/D");
+	trV->Branch("wQ4", &wQ4[2], "wQ4/D");
 
 	for ( int n = 2; n < 7; n++ ) {
 		trV->Branch(Form("rQaabc%i", n), &rQaabc[n], Form("rQaabc%i/D", n));
 		trV->Branch(Form("rQab%i", n), &rQab[n], Form("rQab%i/D", n));
 		trV->Branch(Form("rQac%i", n), &rQac[n], Form("rQac%i/D", n));
-		trV->Branch(Form("rQ%i", n), &rQ[n], Form("rQ%i/D", n));
+		trV->Branch(Form("rQ2%i", n), &rQ2[n], Form("rQ2%i/D", n));
+		trV->Branch(Form("rQ4%i", n), &rQ4[n], Form("rQ4%i/D", n));
 	}
 
 	cout << " cmode_ = " << cmode_ << endl;
@@ -209,6 +211,7 @@ QWCumuGap::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		auto rC = cqC->calculate(1, hc[n]);
 		auto rA1= cqA->calculate(1, hc[n]);
 		auto r4 = cq4->calculate(4, hc[n]);
+		auto r2 = cq4->calculate(2, hc[n]);
 
 		correlations::Complex Qaabc = rA.sum() * std::conj(rB.sum()) * std::conj(rC.sum());
 		rQaabc[n] = Qaabc.real();
@@ -225,9 +228,13 @@ QWCumuGap::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		iQac[n] = Qac.imag();
 		wQac[n] = rA1.weight() * rC.weight();
 
-		rQ[n] = r4.sum().real();
-		iQ[n] = r4.sum().imag();
-		wQ[n] = r4.weight();
+		rQ2[n] = r2.sum().real();
+		iQ2[n] = r2.sum().imag();
+		wQ2[n] = r2.weight();
+
+		rQ4[n] = r4.sum().real();
+		iQ4[n] = r4.sum().imag();
+		wQ4[n] = r4.weight();
 
 		delete cqA;
 		delete cqB;
@@ -249,95 +256,33 @@ QWCumuGap::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 void
 QWCumuGap::initQ()
 {
-	hc[1] = correlations::HarmonicVector(4);
-	hc[1][0] =  1;
-	hc[1][1] =  1;
-	hc[1][2] = -1;
-	hc[1][3] = -1;
+	for ( int n = 1; n < 7; n++ ) {
+		hc[n] = correlations::HarmonicVector(2);
+		hc[n][0] =  n;
+		hc[n][1] =  n;
+		qA[n].resize(hc[n]);
+		qB[n].resize(hc[n]);
+		qC[n].resize(hc[n]);
 
-	hc[2] = correlations::HarmonicVector(4);
-	hc[2][0] =  2;
-	hc[2][1] =  2;
-	hc[2][2] = -2;
-	hc[2][3] = -2;
-
-	hc[3] = correlations::HarmonicVector(4);
-	hc[3][0] =  3;
-	hc[3][1] =  3;
-	hc[3][2] = -3;
-	hc[3][3] = -3;
-
-	hc[4] = correlations::HarmonicVector(4);
-	hc[4][0] =  4;
-	hc[4][1] =  4;
-	hc[4][2] = -4;
-	hc[4][3] = -4;
-
-	hc[5] = correlations::HarmonicVector(4);
-	hc[5][0] =  5;
-	hc[5][1] =  5;
-	hc[5][2] = -5;
-	hc[5][3] = -5;
-
-	hc[6] = correlations::HarmonicVector(4);
-	hc[6][0] =  6;
-	hc[6][1] =  6;
-	hc[6][2] = -6;
-	hc[6][3] = -6;
-
-	qA[1].resize(hc[1]);
-	qA[2].resize(hc[2]);
-	qA[3].resize(hc[3]);
-	qA[4].resize(hc[4]);
-	qA[5].resize(hc[5]);
-	qA[6].resize(hc[6]);
-
-	qB[1].resize(hc[1]);
-	qB[2].resize(hc[2]);
-	qB[3].resize(hc[3]);
-	qB[4].resize(hc[4]);
-	qB[5].resize(hc[5]);
-	qB[6].resize(hc[6]);
-
-	qC[1].resize(hc[1]);
-	qC[2].resize(hc[2]);
-	qC[3].resize(hc[3]);
-	qC[4].resize(hc[4]);
-	qC[5].resize(hc[5]);
-	qC[6].resize(hc[6]);
-
+		h4[n] = correlations::HarmonicVector(4);
+		h4[n][0] =  n;
+		h4[n][1] = -n;
+		h4[n][2] =  n;
+		h4[n][3] = -n;
+		q4[n].resize(h4[n]);
+	}
 }
 
 void
 QWCumuGap::doneQ()
 {
-	qA[1].reset();
-	qA[2].reset();
-	qA[3].reset();
-	qA[4].reset();
-	qA[5].reset();
-	qA[6].reset();
+	for ( int n = 1; n < 7; n++ ) {
+		qA[n].reset();
+		qB[n].reset();
+		qC[n].reset();
 
-	qB[1].reset();
-	qB[2].reset();
-	qB[3].reset();
-	qB[4].reset();
-	qB[5].reset();
-	qB[6].reset();
-
-	qC[1].reset();
-	qC[2].reset();
-	qC[3].reset();
-	qC[4].reset();
-	qC[5].reset();
-	qC[6].reset();
-
-	q4[1].reset();
-	q4[2].reset();
-	q4[3].reset();
-	q4[4].reset();
-	q4[5].reset();
-	q4[6].reset();
+		q4[n].reset();
+	}
 }
 
 // ------------ method called once each job just before starting event loop  ------------
