@@ -74,7 +74,7 @@ process.hltHM250.andOr = cms.bool(True)
 process.hltHM250.throw = cms.bool(False)
 
 
-process.cumugap = cms.EDAnalyzer('QWCumuV3'
+process.cumugap = cms.EDAnalyzer('QWCumuGap'
 	, trackEta = cms.untracked.InputTag('QWEvent', "eta")
 	, trackPhi = cms.untracked.InputTag('QWEvent', "phi")
 	, trackPt = cms.untracked.InputTag('QWEvent', "pt")
@@ -187,10 +187,10 @@ process.mon150 = cms.Sequence(process.histNoff + process.vectPhi150 + process.ve
 process.mon185 = cms.Sequence(process.histNoff + process.vectPhi185 + process.vectPt185 + process.vectEta185 + process.vectPhiW185 + process.vectPtW185 + process.vectEtaW185)
 process.mon250 = cms.Sequence(process.histNoff + process.vectPhi250 + process.vectPt250 + process.vectEta250 + process.vectPhiW250 + process.vectPtW250 + process.vectEtaW250)
 
-process.ana120 = cms.Path(process.hltHM120*process.eventSelection*process.Noff*process.ppNoffFilter120*process.QWEvent*process.cumulantMB * process.mon120)
-process.ana150 = cms.Path(process.hltHM150*process.eventSelection*process.Noff*process.ppNoffFilter150*process.QWEvent*process.cumulantMB * process.mon150)
-process.ana185 = cms.Path(process.hltHM185*process.eventSelection*process.Noff*process.ppNoffFilter185*process.QWEvent*process.cumulantMB * process.mon185)
-process.ana250 = cms.Path(process.hltHM250*process.eventSelection*process.Noff*process.ppNoffFilter250*process.QWEvent*process.cumulantMB * process.mon250)
+process.ana120 = cms.Path(process.hltHM120*process.eventSelection*process.Noff*process.ppNoffFilter120*process.QWEvent*process.cumugap * process.mon120)
+process.ana150 = cms.Path(process.hltHM150*process.eventSelection*process.Noff*process.ppNoffFilter150*process.QWEvent*process.cumugap * process.mon150)
+process.ana185 = cms.Path(process.hltHM185*process.eventSelection*process.Noff*process.ppNoffFilter185*process.QWEvent*process.cumugap * process.mon185)
+process.ana250 = cms.Path(process.hltHM250*process.eventSelection*process.Noff*process.ppNoffFilter250*process.QWEvent*process.cumugap * process.mon250)
 
 process.schedule = cms.Schedule(
 	process.ana120,
