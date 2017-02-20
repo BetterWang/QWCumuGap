@@ -87,10 +87,15 @@ class QWCumuGap : public edm::EDAnalyzer {
 		double iQac[7];
 		double wQac[7];
 
+		double rQ[7];
+		double iQ[7];
+		double wQ[7];
+
 		correlations::HarmonicVector	hc[7];
 		correlations::QVector		qA[7];
 		correlations::QVector		qB[7];
 		correlations::QVector		qC[7];
+		correlations::QVector		q4[7];
 
 		void initQ();
 		void doneQ();
