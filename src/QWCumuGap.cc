@@ -210,8 +210,8 @@ QWCumuGap::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		auto rB = cqB->calculate(1, hc[n]);
 		auto rC = cqC->calculate(1, hc[n]);
 		auto rA1= cqA->calculate(1, hc[n]);
-		auto r4 = cq4->calculate(4, hc[n]);
-		auto r2 = cq4->calculate(2, hc[n]);
+		auto r4 = cq4->calculate(4, h4[n]);
+		auto r2 = cq4->calculate(2, h4[n]);
 
 		correlations::Complex Qaabc = rA.sum() * std::conj(rB.sum()) * std::conj(rC.sum());
 		rQaabc[n] = Qaabc.real();
