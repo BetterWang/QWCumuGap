@@ -1,6 +1,6 @@
 bin/
 pix/
-MC
+pPb
 cumu
 test/*
 !test/qw*.py
