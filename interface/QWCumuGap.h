@@ -102,6 +102,8 @@ class QWCumuGap : public edm::EDAnalyzer {
 		correlations::QVector		qC[7];
 		correlations::QVector		q4[7];
 
+		double etabin[4];
+
 		void initQ();
 		void doneQ();
 

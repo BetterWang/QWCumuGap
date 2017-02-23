@@ -5,7 +5,7 @@ from httplib import HTTPException
 
 config = config()
 
-config.General.requestName = 'PAMB1_cumugap_eff_v2'
+config.General.requestName = 'PAMB1_cumugap_eff_v4'
 config.General.workArea = 'CrabArea'
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -30,54 +30,54 @@ except HTTPException as hte:
 except ClientException as cle:
         print "Failed submitting task: %s" % (cle)
 
-# MB2
-config.General.requestName = 'PAMB2_cumugap_eff_v2'
-config.Data.inputDataset = '/PAMinimumBias2/PARun2016C-PromptReco-v1/AOD'
-try:
-        crabCommand('submit', config = config)
-except HTTPException as hte:
-        print "Failed submitting task: %s" % (hte.headers)
-except ClientException as cle:
-        print "Failed submitting task: %s" % (cle)
-
-
-# MB3
-config.General.requestName = 'PAMB3_cumugap_eff_v2'
-config.Data.inputDataset = '/PAMinimumBias3/PARun2016C-PromptReco-v1/AOD'
-try:
-        crabCommand('submit', config = config)
-except HTTPException as hte:
-        print "Failed submitting task: %s" % (hte.headers)
-except ClientException as cle:
-        print "Failed submitting task: %s" % (cle)
-
-
-# MB4
-config.General.requestName = 'PAMB4_cumugap_eff_v2'
-config.Data.inputDataset = '/PAMinimumBias4/PARun2016C-PromptReco-v1/AOD'
-try:
-        crabCommand('submit', config = config)
-except HTTPException as hte:
-        print "Failed submitting task: %s" % (hte.headers)
-except ClientException as cle:
-        print "Failed submitting task: %s" % (cle)
-
-# MB5
-config.General.requestName = 'PAMB5_cumugap_eff_v2'
-config.Data.inputDataset = '/PAMinimumBias5/PARun2016C-PromptReco-v1/AOD'
-try:
-        crabCommand('submit', config = config)
-except HTTPException as hte:
-        print "Failed submitting task: %s" % (hte.headers)
-except ClientException as cle:
-        print "Failed submitting task: %s" % (cle)
-
-# MB6
-config.General.requestName = 'PAMB6_cumugap_eff_v2'
-config.Data.inputDataset = '/PAMinimumBias6/PARun2016C-PromptReco-v1/AOD'
-try:
-        crabCommand('submit', config = config)
-except HTTPException as hte:
-        print "Failed submitting task: %s" % (hte.headers)
-except ClientException as cle:
-        print "Failed submitting task: %s" % (cle)
+## MB2
+#config.General.requestName = 'PAMB2_cumugap_eff_v3'
+#config.Data.inputDataset = '/PAMinimumBias2/PARun2016C-PromptReco-v1/AOD'
+#try:
+#        crabCommand('submit', config = config)
+#except HTTPException as hte:
+#        print "Failed submitting task: %s" % (hte.headers)
+#except ClientException as cle:
+#        print "Failed submitting task: %s" % (cle)
+#
+#
+## MB3
+#config.General.requestName = 'PAMB3_cumugap_eff_v3'
+#config.Data.inputDataset = '/PAMinimumBias3/PARun2016C-PromptReco-v1/AOD'
+#try:
+#        crabCommand('submit', config = config)
+#except HTTPException as hte:
+#        print "Failed submitting task: %s" % (hte.headers)
+#except ClientException as cle:
+#        print "Failed submitting task: %s" % (cle)
+#
+#
+## MB4
+#config.General.requestName = 'PAMB4_cumugap_eff_v3'
+#config.Data.inputDataset = '/PAMinimumBias4/PARun2016C-PromptReco-v1/AOD'
+#try:
+#        crabCommand('submit', config = config)
+#except HTTPException as hte:
+#        print "Failed submitting task: %s" % (hte.headers)
+#except ClientException as cle:
+#        print "Failed submitting task: %s" % (cle)
+#
+## MB5
+#config.General.requestName = 'PAMB5_cumugap_eff_v3'
+#config.Data.inputDataset = '/PAMinimumBias5/PARun2016C-PromptReco-v1/AOD'
+#try:
+#        crabCommand('submit', config = config)
+#except HTTPException as hte:
+#        print "Failed submitting task: %s" % (hte.headers)
+#except ClientException as cle:
+#        print "Failed submitting task: %s" % (cle)
+#
+## MB6
+#config.General.requestName = 'PAMB6_cumugap_eff_v3'
+#config.Data.inputDataset = '/PAMinimumBias6/PARun2016C-PromptReco-v1/AOD'
+#try:
+#        crabCommand('submit', config = config)
+#except HTTPException as hte:
+#        print "Failed submitting task: %s" % (hte.headers)
+#except ClientException as cle:
+#        print "Failed submitting task: %s" % (cle)

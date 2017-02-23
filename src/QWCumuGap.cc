@@ -75,6 +75,11 @@ QWCumuGap::QWCumuGap(const edm::ParameterSet& iConfig):
 	cmode_ = iConfig.getUntrackedParameter<int>("cmode", 1);
 	nvtx_ = iConfig.getUntrackedParameter<int>("nvtx", 100);
 
+	etabin[0] = rfpmineta_;
+	etabin[1] = rfpmineta_ + (rfpmaxeta_ - rfpmineta_)/3.;
+	etabin[2] = rfpmineta_ + 2*(rfpmaxeta_ - rfpmineta_)/3.;
+	etabin[3] = rfpmaxeta_;
+
         consumes<int>(centralityTag_);
         consumes<std::vector<double> >(trackEta_);
         consumes<std::vector<double> >(trackPhi_);
@@ -153,15 +158,16 @@ QWCumuGap::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	int sz = int(hEta->size());
 	if ( sz == 0 ) return;
 
-	double etabin[4] = { rfpmineta_, rfpminpt_ + (rfpmaxeta_ - rfpminpt_)/3., rfpminpt_ + 2*(rfpmaxeta_ - rfpminpt_)/3., rfpmaxeta_};
 
 	int rfp_sz = 0;
 	for ( int i = 0; i < sz; i++ ) {
 		if ( (*hPt)[i] < rfpminpt_ or (*hPt)[i] > rfpmaxpt_ ) continue;
-		for ( int n = 1; n < 7; n++ ) {
-			q4[n].fill( (*hPhi)[i], (*hWeight)[i] );
+		if ( (*hEta)[i] > rfpmineta_ or (*hEta)[i] < rfpmaxeta_ ) {
+			for ( int n = 1; n < 7; n++ ) {
+				q4[n].fill( (*hPhi)[i], (*hWeight)[i] );
+			}
+			rfp_sz++;
 		}
-		rfp_sz++;
 		if ( (*hEta)[i] > etabin[0] and (*hEta)[i] < etabin[1] ) {
 			// B
 			for ( int n = 1; n < 7; n++ ) {

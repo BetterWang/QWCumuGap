@@ -5,7 +5,7 @@ from httplib import HTTPException
 
 config = config()
 
-config.General.requestName = 'PAHM0_cumugap_eff_v2'
+config.General.requestName = 'PAHM0_cumugap_eff_v3'
 config.General.workArea = 'CrabArea'
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -35,7 +35,7 @@ except ClientException as cle:
 ### 1
 config.Data.inputDataset = '/PAHighMultiplicity1/PARun2016C-PromptReco-v1/AOD'
 
-config.General.requestName = 'PAHM1_cumugap_eff_v2'
+config.General.requestName = 'PAHM1_cumugap_eff_v3'
 config.JobType.psetName = 'qwcumu_pPb16_HM1_eff_v1.py'
 config.JobType.inputFiles = ['Hijing_8TeV_dataBS.root']
 try:
@@ -49,7 +49,7 @@ except ClientException as cle:
 ## 7
 config.Data.inputDataset = '/PAHighMultiplicity7/PARun2016C-PromptReco-v1/AOD'
 
-config.General.requestName = 'PAHM7_cumugap_eff_v2'
+config.General.requestName = 'PAHM7_cumugap_eff_v3'
 config.JobType.psetName = 'qwcumu_pPb16_HM7_eff_v1.py'
 config.JobType.inputFiles = ['Hijing_8TeV_dataBS.root']
 try:
