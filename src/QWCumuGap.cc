@@ -108,6 +108,8 @@ QWCumuGap::QWCumuGap(const edm::ParameterSet& iConfig):
 	trV->Branch("wQac", &wQac[2], "wQac/D");
 	trV->Branch("wQ2", &wQ2[2], "wQ2/D");
 	trV->Branch("wQ4", &wQ4[2], "wQ4/D");
+	trV->Branch("wQ6", &wQ6[2], "wQ6/D");
+	trV->Branch("wQ8", &wQ8[2], "wQ8/D");
 
 	for ( int n = 2; n < 7; n++ ) {
 		trV->Branch(Form("rQaabc%i", n), &rQaabc[n], Form("rQaabc%i/D", n));
@@ -115,6 +117,8 @@ QWCumuGap::QWCumuGap(const edm::ParameterSet& iConfig):
 		trV->Branch(Form("rQac%i", n), &rQac[n], Form("rQac%i/D", n));
 		trV->Branch(Form("rQ2%i", n), &rQ2[n], Form("rQ2%i/D", n));
 		trV->Branch(Form("rQ4%i", n), &rQ4[n], Form("rQ4%i/D", n));
+		trV->Branch(Form("rQ6%i", n), &rQ6[n], Form("rQ6%i/D", n));
+		trV->Branch(Form("rQ8%i", n), &rQ8[n], Form("rQ8%i/D", n));
 	}
 
 	cout << " cmode_ = " << cmode_ << endl;
@@ -216,8 +220,10 @@ QWCumuGap::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		auto rB = cqB->calculate(1, hc[n]);
 		auto rC = cqC->calculate(1, hc[n]);
 		auto rA1= cqA->calculate(1, hc[n]);
-		auto r4 = cq4->calculate(4, h4[n]);
 		auto r2 = cq4->calculate(2, h4[n]);
+		auto r4 = cq4->calculate(4, h4[n]);
+		auto r6 = cq4->calculate(6, h4[n]);
+		auto r8 = cq4->calculate(8, h4[n]);
 
 		correlations::Complex Qaabc = rA.sum() * std::conj(rB.sum()) * std::conj(rC.sum());
 		rQaabc[n] = Qaabc.real();
@@ -242,6 +248,14 @@ QWCumuGap::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 		iQ4[n] = r4.sum().imag();
 		wQ4[n] = r4.weight();
 
+		rQ6[n] = r6.sum().real();
+		iQ6[n] = r6.sum().imag();
+		wQ6[n] = r6.weight();
+
+		rQ8[n] = r8.sum().real();
+		iQ8[n] = r8.sum().imag();
+		wQ8[n] = r8.weight();
+
 		delete cqA;
 		delete cqB;
 		delete cqC;
@@ -255,7 +269,6 @@ QWCumuGap::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	trV->Fill();
 	doneQ();
-
 }
 
 
@@ -270,11 +283,15 @@ QWCumuGap::initQ()
 		qB[n].resize(hc[n]);
 		qC[n].resize(hc[n]);
 
-		h4[n] = correlations::HarmonicVector(4);
+		h4[n] = correlations::HarmonicVector(8);
 		h4[n][0] =  n;
 		h4[n][1] = -n;
 		h4[n][2] =  n;
 		h4[n][3] = -n;
+		h4[n][4] =  n;
+		h4[n][5] = -n;
+		h4[n][6] =  n;
+		h4[n][7] = -n;
 		q4[n].resize(h4[n]);
 	}
 }
