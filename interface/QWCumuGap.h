@@ -99,9 +99,9 @@ class QWCumuGap : public edm::EDAnalyzer {
 		double iQ6[7];
 		double wQ6[7];
 
-		double rQ5[7];
-		double iQ5[7];
-		double wQ5[7];
+		double rQ8[7];
+		double iQ8[7];
+		double wQ8[7];
 
 		correlations::HarmonicVector	hc[7];
 		correlations::HarmonicVector	h4[7];
