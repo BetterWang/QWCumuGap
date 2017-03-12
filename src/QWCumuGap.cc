@@ -158,7 +158,7 @@ QWCumuGap::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	iEvent.getByLabel(vertexZ_, 	hVz);
 
 	if ( hVz->size() < 1 ) return;
-	if ( (*hVz)[0] > maxvz_ or (*hVz)[0] < minvz_ ) return;
+	if ( fabs((*hVz)[0]) > maxvz_ or fabs((*hVz)[0]) < minvz_ ) return;
 	int sz = int(hEta->size());
 	if ( sz == 0 ) return;
 

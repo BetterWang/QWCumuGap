@@ -148,7 +148,10 @@ process.ppNoffFilter250 = process.centralityFilter.clone(
 		)
 
 process.load('pPb_HM_eff')
-process.QWEvent.fweight = cms.untracked.InputTag('Hijing_8TeV_dataBS.root')
+process.QWEvent.fweight = cms.untracked.InputTag('Hijing_8TeV_MB_eff_v3_tight.root')
+process.QWEvent.dzdzerror = cms.untracked.double(2.0)
+process.QWEvent.d0d0error = cms.untracked.double(2.0)
+process.QWEvent.pterrorpt = cms.untracked.double(0.05)
 
 process.vectPhi120 = process.vectPhi.clone()
 process.vectPhi150 = process.vectPhi.clone()
@@ -191,8 +194,8 @@ process.ana185 = cms.Path(process.hltHM185*process.eventSelection*process.Noff*p
 process.ana250 = cms.Path(process.hltHM250*process.eventSelection*process.Noff*process.ppNoffFilter250*process.QWEvent*process.cumugap * process.mon250)
 
 process.schedule = cms.Schedule(
-	process.ana120,
-	process.ana150,
-#	process.ana185,
+#	process.ana120,
+#	process.ana150,
+	process.ana185,
 #	process.ana250,
 )

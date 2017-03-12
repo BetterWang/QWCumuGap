@@ -79,7 +79,9 @@ process.eventSelection = cms.Sequence(process.hfCoincFilter * process.PAprimaryV
 
 
 process.load('pPb_HM_eff')
-process.QWEvent.fweight = cms.untracked.InputTag('Hijing_8TeV_dataBS.root')
+process.QWEvent.fweight = cms.untracked.InputTag('Hijing_8TeV_MB_eff_v4_wide.root')
+process.cumugap.minvz = cms.untracked.double(0.0)
+process.cumugap.maxvz = cms.untracked.double(3.0)
 
 process.ana = cms.Path(process.hltMB*process.eventSelection*process.Noff*process.QWEvent*process.cumugap * process.vectMonW)
 

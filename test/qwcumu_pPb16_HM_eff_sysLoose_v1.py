@@ -148,7 +148,10 @@ process.ppNoffFilter250 = process.centralityFilter.clone(
 		)
 
 process.load('pPb_HM_eff')
-process.QWEvent.fweight = cms.untracked.InputTag('Hijing_8TeV_dataBS.root')
+process.QWEvent.fweight = cms.untracked.InputTag('Hijing_8TeV_MB_eff_v3_loose.root')
+process.QWEvent.dzdzerror = cms.untracked.double(5.0)
+process.QWEvent.d0d0error = cms.untracked.double(5.0)
+process.QWEvent.pterrorpt = cms.untracked.double(100.)
 
 process.vectPhi120 = process.vectPhi.clone()
 process.vectPhi150 = process.vectPhi.clone()
