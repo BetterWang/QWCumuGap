@@ -8,14 +8,13 @@ process.load('Configuration.StandardSequences.GeometryDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 #process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
-#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
-#from Configuration.AlCa.GlobalTag import GlobalTag
-#process.GlobalTag = GlobalTag(process.GlobalTag, '75X_dataRun2_v12', '')
+#from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
+#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data', '')
 
 process.options = cms.untracked.PSet(
     Rethrow = cms.untracked.vstring('ProductNotFound')
@@ -78,8 +77,10 @@ process.eventSelection = cms.Sequence(
 )
 
 process.load('PbPb_HIMB5_ppReco_eff')
-process.QWEvent.fweight = cms.untracked.InputTag('Hydjet_ppReco_npix0_v2.root')
-process.QWEvent.minPxLayers = cms.untracked.int32(1)
+process.QWEvent.fweight = cms.untracked.InputTag('Hydjet_ppReco_std_v2.root')
+process.QWEvent.dzdzerror = cms.untracked.double(3.0)
+process.QWEvent.d0d0error = cms.untracked.double(3.0)
+process.QWEvent.pterrorpt = cms.untracked.double(0.1)
 
 process.ana = cms.Path(process.eventSelection*process.makeEvent*process.ppRecoCentFilter*process.cumugap * process.vectMonW )
 

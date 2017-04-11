@@ -22,30 +22,19 @@ config.Data.lumiMask = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Coll
 config.Data.publication = False
 config.Data.useParent = False
 config.Site.storageSite = 'T2_CH_CERN'
-#config.Data.allowNonValidInputDataset = True
-try:
-        crabCommand('submit', config = config)
-except HTTPException as hte:
-        print "Failed submitting task: %s" % (hte.headers)
-except ClientException as cle:
-        print "Failed submitting task: %s" % (cle)
-
-
-
-config.General.requestName = 'HIMB5_CumuGap_ppReco_eff_noff_sysTighter_v2'
-config.JobType.psetName = 'qwcumu_PbPb15_ppReco_eff_sysTighter_v1.py'
-config.JobType.inputFiles = ['Hydjet_ppReco_tighter_v2.root']
-try:
-        crabCommand('submit', config = config)
-except HTTPException as hte:
-        print "Failed submitting task: %s" % (hte.headers)
-except ClientException as cle:
-        print "Failed submitting task: %s" % (cle)
-
-
-#config.General.requestName = 'HIMB5_CumuGap_ppReco_eff_noff_sysTight2_v2'
-#config.JobType.psetName = 'qwcumu_PbPb15_ppReco_eff_sysTight2_v1.py'
-#config.JobType.inputFiles = ['Hydjet_ppReco_tight2_v2.root']
+##config.Data.allowNonValidInputDataset = True
+#try:
+#        crabCommand('submit', config = config)
+#except HTTPException as hte:
+#        print "Failed submitting task: %s" % (hte.headers)
+#except ClientException as cle:
+#        print "Failed submitting task: %s" % (cle)
+#
+#
+#
+#config.General.requestName = 'HIMB5_CumuGap_ppReco_eff_noff_sysTighter_v2'
+#config.JobType.psetName = 'qwcumu_PbPb15_ppReco_eff_sysTighter_v1.py'
+#config.JobType.inputFiles = ['Hydjet_ppReco_tighter_v2.root']
 #try:
 #        crabCommand('submit', config = config)
 #except HTTPException as hte:
@@ -54,14 +43,9 @@ except ClientException as cle:
 #        print "Failed submitting task: %s" % (cle)
 #
 
-
-
-
-
-
-#######HIMB6
-#config.General.requestName = 'HIMB6_CumuGap_ppReco_eff_noff_sysTight_v2'
-#config.Data.inputDataset = '/HIMinimumBias6/HIRun2015-02May2016-v1/AOD'
+config.General.requestName = 'HIMB5_CumuGap_ppReco_eff_noff_sysTight2_v2'
+config.JobType.psetName = 'qwcumu_PbPb15_ppReco_eff_sysTight2_v1.py'
+config.JobType.inputFiles = ['Hydjet_ppReco_tight2_v2.root']
 #try:
 #        crabCommand('submit', config = config)
 #except HTTPException as hte:
@@ -69,12 +53,28 @@ except ClientException as cle:
 #except ClientException as cle:
 #        print "Failed submitting task: %s" % (cle)
 
-#######HIMB7
-#config.General.requestName = 'HIMB7_CumuGap_ppReco_eff_noff_sysTight_v2'
-#config.Data.inputDataset = '/HIMinimumBias7/HIRun2015-02May2016-v1/AOD'
-#try:
-#        crabCommand('submit', config = config)
-#except HTTPException as hte:
-#        print "Failed submitting task: %s" % (hte.headers)
-#except ClientException as cle:
-#        print "Failed submitting task: %s" % (cle)
+
+
+
+
+
+
+######HIMB6
+config.General.requestName = 'HIMB6_CumuGap_ppReco_eff_noff_sysTight2_v2'
+config.Data.inputDataset = '/HIMinimumBias6/HIRun2015-02May2016-v1/AOD'
+try:
+        crabCommand('submit', config = config)
+except HTTPException as hte:
+        print "Failed submitting task: %s" % (hte.headers)
+except ClientException as cle:
+        print "Failed submitting task: %s" % (cle)
+
+######HIMB7
+config.General.requestName = 'HIMB7_CumuGap_ppReco_eff_noff_sysTight2_v2'
+config.Data.inputDataset = '/HIMinimumBias7/HIRun2015-02May2016-v1/AOD'
+try:
+        crabCommand('submit', config = config)
+except HTTPException as hte:
+        print "Failed submitting task: %s" % (hte.headers)
+except ClientException as cle:
+        print "Failed submitting task: %s" % (cle)

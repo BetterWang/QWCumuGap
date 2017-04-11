@@ -5,15 +5,15 @@ from httplib import HTTPException
 
 config = config()
 
-config.General.requestName = 'HIMB5_CumuGap_ppReco_eff_noff_sysPxLayer1_v4'
+config.General.requestName = 'HIMB2_CumuGap_Pixel_eff_cent_v1'
 config.General.workArea = 'CrabArea'
 config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'qwcumu_PbPb15_ppReco_eff_sysPxLayer1_v1.py'
+config.JobType.psetName = 'qwcumu_PbPb15_Pix_eff_v1.py'
+config.JobType.inputFiles = ['EffCorrectionsPixel_TT_pt_0_10_v2.root']
 config.JobType.maxJobRuntimeMin = 2500
-config.JobType.inputFiles = ['Hydjet_ppReco_npix0_v2.root']
-config.Data.inputDataset = '/HIMinimumBias5/HIRun2015-02May2016-v1/AOD'
+config.Data.inputDataset = '/HIMinimumBias2/HIRun2015-25Aug2016-v1/AOD'
 #config.Data.inputDBS = 'phys03'
 config.Data.splitting = 'LumiBased'
 config.Data.unitsPerJob = 20
@@ -31,22 +31,3 @@ except ClientException as cle:
         print "Failed submitting task: %s" % (cle)
 
 
-#######HIMB6
-config.General.requestName = 'HIMB6_CumuGap_ppReco_eff_noff_sysPxLayer1_v4'
-config.Data.inputDataset = '/HIMinimumBias6/HIRun2015-02May2016-v1/AOD'
-try:
-        crabCommand('submit', config = config)
-except HTTPException as hte:
-        print "Failed submitting task: %s" % (hte.headers)
-except ClientException as cle:
-        print "Failed submitting task: %s" % (cle)
-
-######HIMB7
-config.General.requestName = 'HIMB7_CumuGap_ppReco_eff_noff_sysPxLayer1_v4'
-config.Data.inputDataset = '/HIMinimumBias7/HIRun2015-02May2016-v1/AOD'
-try:
-        crabCommand('submit', config = config)
-except HTTPException as hte:
-        print "Failed submitting task: %s" % (hte.headers)
-except ClientException as cle:
-        print "Failed submitting task: %s" % (cle)
