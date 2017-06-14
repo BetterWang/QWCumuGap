@@ -166,7 +166,7 @@ QWCumuGap::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	int rfp_sz = 0;
 	for ( int i = 0; i < sz; i++ ) {
 		if ( (*hPt)[i] < rfpminpt_ or (*hPt)[i] > rfpmaxpt_ ) continue;
-		if ( (*hEta)[i] > rfpmineta_ or (*hEta)[i] < rfpmaxeta_ ) {
+		if ( (*hEta)[i] > rfpmineta_ and (*hEta)[i] < rfpmaxeta_ ) {
 			for ( int n = 1; n < 7; n++ ) {
 				q4[n].fill( (*hPhi)[i], (*hWeight)[i] );
 			}
