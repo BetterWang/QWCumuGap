@@ -4,7 +4,7 @@ pix/
 pPb
 cumu
 test/*
-!test/PbPb_HIMB2_pixel_eff.py
+!test/PbPb_*.py
 !test/qw*.py
 !test/pPb*.py
 !test/crab_*.py
