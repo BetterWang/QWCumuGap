@@ -7,14 +7,22 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.StandardSequences.GeometryDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
-#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 
 
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
 #process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
-#from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data', '')
+process.GlobalTag.snapshotTime = cms.string("9999-12-31 23:59:59.000")
+process.GlobalTag.toGet.extend([
+   cms.PSet(record = cms.string("HeavyIonRcd"),
+      tag = cms.string("CentralityTable_HFtowers200_DataXeXe_eff942_run2v9313x01_offline"),
+      connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS"),
+      label = cms.untracked.string("HFtowersCymbal5Ev8")
+   ),
+])
 
 process.options = cms.untracked.PSet(
     Rethrow = cms.untracked.vstring('ProductNotFound')
@@ -41,7 +49,7 @@ process.cumugap = cms.EDAnalyzer('QWCumuGap'
 	, trackWeight = cms.untracked.InputTag('QWEvent', "weight")
 	, trackCharge = cms.untracked.InputTag('QWEvent', "charge")
 	, vertexZ = cms.untracked.InputTag('QWEvent', "vz")
-	, centrality = cms.untracked.InputTag('Noff')
+	, centrality = cms.untracked.InputTag('centralityBin', 'HFtowers')
 	, minvz = cms.untracked.double(-15.0)
 	, maxvz = cms.untracked.double(15.0)
 	, rfpmineta = cms.untracked.double(-2.4)
@@ -91,7 +99,7 @@ process.QWEvent = cms.EDProducer("QWEventProducer"
 		, vertexSrc = cms.untracked.InputTag('offlinePrimaryVertices', "")
 		, trackSrc = cms.untracked.InputTag('generalTracks')
 		, fweight = cms.untracked.InputTag('Hydjet_eff_mult_v1.root')
-                , centralitySrc = cms.untracked.InputTag("Noff")
+                , centralitySrc = cms.untracked.InputTag("centralityBin", 'HFtowers')
 		, dzdzerror = cms.untracked.double(3.0)
 		, d0d0error = cms.untracked.double(3.0)
 		, pterrorpt = cms.untracked.double(0.1)
@@ -103,20 +111,53 @@ process.QWEvent = cms.EDProducer("QWEventProducer"
 
 process.QWEvent.fweight = cms.untracked.InputTag('NA')
 
+process.load('RecoHI.HiCentralityAlgos.HiCentrality_cfi')
+process.hiCentrality.produceHFhits = False
+process.hiCentrality.produceHFtowers = True
+process.hiCentrality.produceEcalhits = False
+process.hiCentrality.produceZDChits = False
+process.hiCentrality.produceETmidRapidity = True
+process.hiCentrality.producePixelhits = False
+process.hiCentrality.produceTracks = True
+process.hiCentrality.producePixelTracks = False
+process.hiCentrality.reUseCentrality = False
+process.hiCentrality.srcTracks = cms.InputTag("generalTracks")
+process.hiCentrality.srcVertex = cms.InputTag("offlinePrimaryVertices")
+
+process.load("RecoHI.HiCentralityAlgos.CentralityBin_cfi")
+process.centralityBin.Centrality = cms.InputTag("hiCentrality")
+process.centralityBin.centralityVariable = cms.string("HFtowers")
+process.centralityBin.nonDefaultGlauberModel = cms.string("Cymbal5Ev8")
+
 
 process.Noff = cms.EDProducer("QWNtrkOfflineProducer",
 		vertexSrc = cms.untracked.InputTag("offlinePrimaryVertices"),
 		trackSrc  = cms.untracked.InputTag("generalTracks")
 		)
 
+process.dbCent = cms.EDProducer('QWInt2Double',
+                src = cms.untracked.InputTag('centralityBin', "HFtowers")
+                )
+
+process.dbNoff = cms.EDProducer('QWInt2Double',
+                src = cms.untracked.InputTag('Noff')
+                )
+
 # monitoring
+process.histCent = cms.EDAnalyzer('QWHistAnalyzer',
+		src = cms.untracked.InputTag("centralityBin", 'HFtowers'),
+		Nbins = cms.untracked.int32(200),
+		start = cms.untracked.double(0),
+		end = cms.untracked.double(200),
+		)
+
+
 process.histNoff = cms.EDAnalyzer('QWHistAnalyzer',
 		src = cms.untracked.InputTag("Noff"),
 		Nbins = cms.untracked.int32(5000),
 		start = cms.untracked.double(0),
 		end = cms.untracked.double(5000),
 		)
-
 
 process.vectPhi = cms.EDAnalyzer('QWVectorAnalyzer',
 		src = cms.untracked.InputTag("QWEvent", "phi"),
@@ -148,7 +189,7 @@ process.vectEta = cms.EDAnalyzer('QWVectorAnalyzer',
 		cend = cms.untracked.double(2.5),
 		)
 
-process.corr2D = cms.EDAnalyzer('QWVCorrAnalyzer',
+process.PhiEta2D = cms.EDAnalyzer('QWVCorrAnalyzer',
 		srcX = cms.untracked.InputTag('QWEvent', 'eta'),
 		NbinsX = cms.untracked.int32(48),
 		hstartX = cms.untracked.double(-2.4),
@@ -159,10 +200,20 @@ process.corr2D = cms.EDAnalyzer('QWVCorrAnalyzer',
 		hendY = cms.untracked.double(3.14159265358979323846),
 		)
 
-process.vectMon = cms.Sequence(process.histNoff * process.vectPhi * process.vectPt * process.vectEta * process.corr2D)
-#process.vectMon = cms.Sequence(process.histNoff * process.vectPhi * process.vectPt * process.vectEta )
+process.NoffCent2D = cms.EDAnalyzer('QWCorrAnalyzer',
+		srcX = cms.untracked.InputTag('dbNoff'),
+		NbinsX = cms.untracked.int32(5000),
+		hstartX = cms.untracked.double(0),
+		hendX = cms.untracked.double(5000),
+		srcY = cms.untracked.InputTag('dbCent'),
+		NbinsY = cms.untracked.int32(200),
+		hstartY = cms.untracked.double(0),
+		hendY = cms.untracked.double(200),
+		)
 
-process.ana = cms.Path(process.hltMB * process.eventSelection * process.Noff * process.QWEvent * process.cumugap * process.vectMon )
+process.vectMon = cms.Sequence(process.histCent * process.histNoff * process.vectPhi * process.vectPt * process.vectEta * process.PhiEta2D * process.NoffCent2D )
+
+process.ana = cms.Path(process.hltMB * process.eventSelection * process.hiCentrality * process.centralityBin * process.Noff * process.dbNoff * process.dbCent * process.QWEvent * process.cumugap * process.vectMon )
 
 process.RECO = cms.OutputModule("PoolOutputModule",
 		outputCommands = cms.untracked.vstring('keep *'),
