@@ -12,7 +12,7 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 
 
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
-#process.MessageLogger.cerr.FwkReport.reportEvery = 100
+process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data', '')
 process.GlobalTag.snapshotTime = cms.string("9999-12-31 23:59:59.000")
@@ -98,7 +98,7 @@ process.eventSelection = cms.Sequence(
 process.QWEvent = cms.EDProducer("QWEventProducer"
 		, vertexSrc = cms.untracked.InputTag('offlinePrimaryVertices', "")
 		, trackSrc = cms.untracked.InputTag('generalTracks')
-		, fweight = cms.untracked.InputTag('Hydjet_eff_mult_v1.root')
+		, fweight = cms.untracked.InputTag('XeXe_eff_table_92x_cent.root')
                 , centralitySrc = cms.untracked.InputTag("centralityBin", 'HFtowers')
 		, dzdzerror = cms.untracked.double(3.0)
 		, d0d0error = cms.untracked.double(3.0)
@@ -109,7 +109,6 @@ process.QWEvent = cms.EDProducer("QWEventProducer"
 		, Etamax = cms.untracked.double(2.4)
                 )
 
-process.QWEvent.fweight = cms.untracked.InputTag('NA')
 
 process.QWVtxSize = cms.EDProducer('QWVectCounter',
                 src = cms.untracked.InputTag("QWEvent", "vz")
@@ -216,16 +215,16 @@ process.PhiEta2D = cms.EDAnalyzer('QWVCorrAnalyzer',
 		hendY = cms.untracked.double(3.14159265358979323846),
 		)
 
-process.NoffCent2D = cms.EDAnalyzer('QWCorrAnalyzer',
-		srcX = cms.untracked.InputTag('dbNoff'),
-		NbinsX = cms.untracked.int32(5000),
-		hstartX = cms.untracked.double(0),
-		hendX = cms.untracked.double(5000),
-		srcY = cms.untracked.InputTag('dbCent'),
-		NbinsY = cms.untracked.int32(200),
-		hstartY = cms.untracked.double(0),
-		hendY = cms.untracked.double(200),
-		)
+#process.NoffCent2D = cms.EDAnalyzer('QWCorrAnalyzer',
+#		srcX = cms.untracked.InputTag('dbNoff'),
+#		NbinsX = cms.untracked.int32(5000),
+#		hstartX = cms.untracked.double(0),
+#		hendX = cms.untracked.double(5000),
+#		srcY = cms.untracked.InputTag('dbCent'),
+#		NbinsY = cms.untracked.int32(200),
+#		hstartY = cms.untracked.double(0),
+#		hendY = cms.untracked.double(200),
+#		)
 
 process.monHFsumEtVsNoff = cms.EDAnalyzer('QWCorrAnalyzer',
                 srcX = cms.untracked.InputTag('QWCent', "EtHFtowerSum"),
@@ -238,7 +237,18 @@ process.monHFsumEtVsNoff = cms.EDAnalyzer('QWCorrAnalyzer',
                 hendY = cms.untracked.double(1000.),
                 )
 
-process.vectMon = cms.Sequence(process.histCent * process.histVtxSize * process.histNoff * process.vectPhi * process.vectPt * process.vectEta * process.PhiEta2D * process.NoffCent2D )
+process.monCentVsNoff = cms.EDAnalyzer('QWCorrAnalyzer',
+                srcX = cms.untracked.InputTag('dbCent'),
+                NbinsX = cms.untracked.int32(200),
+                hstartX = cms.untracked.double(0.),
+                hendX = cms.untracked.double(200.),
+                srcY = cms.untracked.InputTag('dbNoff'),
+                NbinsY = cms.untracked.int32(1000),
+                hstartY = cms.untracked.double(0.),
+                hendY = cms.untracked.double(1000.),
+                )
+
+process.vectMon = cms.Sequence(process.histCent * process.histVtxSize * process.histNoff * process.vectPhi * process.vectPt * process.vectEta * process.PhiEta2D )
 
 process.ana = cms.Path(process.hltMB *
 		process.eventSelection *
@@ -252,6 +262,7 @@ process.ana = cms.Path(process.hltMB *
 		process.QWVtxSize *
 		process.cumugap *
 		process.monHFsumEtVsNoff *
+		process.monCentVsNoff *
 		process.vectMon )
 
 process.RECO = cms.OutputModule("PoolOutputModule",
