@@ -5,18 +5,18 @@ from httplib import HTTPException
 
 config = config()
 
-config.General.requestName = 'HIMB5_ppReco_CentNoff_v4'
+config.General.requestName = 'HIMB5_CumuGap_ppReco_eff_noff_sysLoosePt01_NoScrap_v1'
 config.General.workArea = 'CrabArea'
 config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'qwcumu_PbPb15_ppReco_NoffCent_v4.py'
-#config.JobType.maxJobRuntimeMin = 2500
-#config.JobType.inputFiles = ['Hydjet_PbPb_eff_v1.root']
+config.JobType.psetName = 'qwcumu_PbPb15_ppReco_eff_sysLoosePt01_NoScrap_v1.py'
+config.JobType.maxJobRuntimeMin = 2500
+config.JobType.inputFiles = ['Hydjet_ppReco_v5_loose.root']
 config.Data.inputDataset = '/HIMinimumBias5/HIRun2015-02May2016-v1/AOD'
 #config.Data.inputDBS = 'phys03'
 config.Data.splitting = 'LumiBased'
-config.Data.unitsPerJob = 200
+config.Data.unitsPerJob = 20
 config.Data.outLFNDirBase = '/store/group/phys_heavyions/qwang/PbPb2015_cumu/'
 config.Data.lumiMask = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/HI/Cert_262548-263757_PromptReco_HICollisions15_JSON_v2.txt'
 config.Data.publication = False
@@ -31,8 +31,8 @@ except ClientException as cle:
         print "Failed submitting task: %s" % (cle)
 
 
-####### HIMB6
-#config.General.requestName = 'HIMB6_ppReco_CentNoff_v1'
+#########HIMB6
+#config.General.requestName = 'HIMB6_CumuGap_ppReco_eff_noff_sysLoosePt01_v2'
 #config.Data.inputDataset = '/HIMinimumBias6/HIRun2015-02May2016-v1/AOD'
 #try:
 #        crabCommand('submit', config = config)
@@ -41,8 +41,9 @@ except ClientException as cle:
 #except ClientException as cle:
 #        print "Failed submitting task: %s" % (cle)
 #
-######### HIMB7
-#config.General.requestName = 'HIMB7_ppReco_CentNoff_v1'
+#
+#########HIMB7
+#config.General.requestName = 'HIMB7_CumuGap_ppReco_eff_noff_sysLoosePt01_v2'
 #config.Data.inputDataset = '/HIMinimumBias7/HIRun2015-02May2016-v1/AOD'
 #try:
 #        crabCommand('submit', config = config)
@@ -50,4 +51,3 @@ except ClientException as cle:
 #        print "Failed submitting task: %s" % (hte.headers)
 #except ClientException as cle:
 #        print "Failed submitting task: %s" % (cle)
-#
